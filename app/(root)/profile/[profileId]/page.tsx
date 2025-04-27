@@ -7,6 +7,7 @@ import LoaderSpinner from "@/components/LoaderSpinner";
 import PodcastCard from "@/components/PodcastCard";
 import ProfileCard from "@/components/ProfileCard";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 
 const ProfilePage = ({
   params,
@@ -15,14 +16,18 @@ const ProfilePage = ({
     profileId: string;
   };
 }) => {
-  const user = useQuery(api.users.getUserById, {
+  const userId = useQuery(api.users.getUserById, {
     clerkId: params.profileId,
   });
+
+  const { user } = useUser();
+
   const podcastsData = useQuery(api.podcasts.getPodcastByAuthorId, {
     authorId: params.profileId,
   });
+  if (!user) return null;
 
-  if (!user || !podcastsData) return <LoaderSpinner />;
+  if (!userId || !podcastsData) return <LoaderSpinner />;
 
   return (
     <section className="mt-9 flex flex-col">
@@ -32,8 +37,8 @@ const ProfilePage = ({
       <div className="mt-6 flex flex-col gap-6 max-md:items-center md:flex-row">
         <ProfileCard
           podcastData={podcastsData!}
-          imageUrl={user?.imageUrl!}
-          userFirstName={user?.name!}
+          imageUrl={userId?.imageUrl!}
+          userFirstName={userId?.name!}
         />
       </div>
       <section className="mt-9 flex flex-col gap-5">
@@ -49,6 +54,8 @@ const ProfilePage = ({
                   title={podcast.podcastTitle!}
                   description={podcast.podcastDescription}
                   podcastId={podcast._id}
+                  authorId={podcast.authorId}
+                  currentUserId={user.id}
                 />
               ))}
           </div>

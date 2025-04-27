@@ -55,6 +55,7 @@ const GenerateThumbnail = ({
   };
 
   const generateImage = async () => {
+    setIsImageLoading(true);
     try {
       const response = await handleGenerateThumbnail({ prompt: imagePrompt });
       const blob = new Blob([response], { type: "image/png" });
@@ -62,6 +63,8 @@ const GenerateThumbnail = ({
     } catch (error) {
       console.log(error);
       toast({ title: "Error generating thumbnail", variant: "destructive" });
+    } finally {
+      setIsImageLoading(false);
     }
   };
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +123,7 @@ const GenerateThumbnail = ({
           </div>
           <div className="w-full max-w-[200px]">
             <Button
-              type="submit"
+              type="button"
               className="text-16 bg-orange-1 py-4 font-bold text-white-1"
               onClick={generateImage}
             >

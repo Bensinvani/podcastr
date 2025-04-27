@@ -27,17 +27,21 @@ const EmptyState = ({
           </p>
         )}
         {buttonLink && (
-          <Button className="bg-orange-1">
-            <Link href={buttonLink} className="gap-1 flex">
+          <Button
+            asChild
+            className="bg-orange-1 flex items-center justify-center gap-2 px-4 py-3"
+          >
+            <Link href={buttonLink} className="flex items-center gap-2">
               <Image
                 src="/icons/discover.svg"
                 width={20}
                 height={20}
                 alt="discover"
+                className="object-contain"
               />
-              <h1 className="text-16 font-extrabold text-white-1">
+              <span className="text-16 font-extrabold text-white-1">
                 {buttonText}
-              </h1>
+              </span>
             </Link>
           </Button>
         )}

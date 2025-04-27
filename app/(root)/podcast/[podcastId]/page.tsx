@@ -23,6 +23,8 @@ const PodcastDetails = ({
     podcastId,
   });
 
+  if (!user) return null;
+
   const isOwner = user?.id === podcast?.authorId;
 
   if (!similarPodcasts || !podcast) return <LoaderSpinner />;
@@ -79,13 +81,21 @@ const PodcastDetails = ({
         {similarPodcasts && similarPodcasts.length > 0 ? (
           <div className="podcast_grid">
             {similarPodcasts?.map(
-              ({ _id, podcastTitle, podcastDescription, imageUrl }) => (
+              ({
+                _id,
+                podcastTitle,
+                podcastDescription,
+                imageUrl,
+                authorId,
+              }) => (
                 <PodcastCard
                   key={_id}
                   imgUrl={imageUrl as string}
                   title={podcastTitle}
                   description={podcastDescription}
                   podcastId={_id}
+                  authorId={authorId}
+                  currentUserId={user.id}
                 />
               )
             )}

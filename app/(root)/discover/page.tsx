@@ -5,6 +5,7 @@ import LoaderSpinner from "@/components/LoaderSpinner";
 import PodcastCard from "@/components/PodcastCard";
 import Searchbar from "@/components/Searchbar";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 
 const Discover = ({
@@ -15,6 +16,9 @@ const Discover = ({
   const podcastsData = useQuery(api.podcasts.getPodcastBySearch, {
     search: search || "",
   });
+  const { user } = useUser();
+
+  if (!user) return null;
 
   return (
     <div className="flex flex-col gap-9">
@@ -29,13 +33,21 @@ const Discover = ({
             {podcastsData.length > 0 ? (
               <div className="podcast_grid">
                 {podcastsData?.map(
-                  ({ _id, podcastTitle, podcastDescription, imageUrl }) => (
+                  ({
+                    _id,
+                    podcastTitle,
+                    podcastDescription,
+                    imageUrl,
+                    authorId,
+                  }) => (
                     <PodcastCard
                       key={_id}
                       imgUrl={imageUrl!}
                       title={podcastTitle}
                       description={podcastDescription}
                       podcastId={_id}
+                      authorId={authorId}
+                      currentUserId={user.id}
                     />
                   )
                 )}

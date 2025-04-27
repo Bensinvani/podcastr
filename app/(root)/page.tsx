@@ -2,9 +2,14 @@
 import PodcastCard from "@/components/PodcastCard";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 
 const Home = () => {
+  const { user } = useUser();
   const trendingPodcasts = useQuery(api.podcasts.getTrendingPodcasts);
+
+  if (!user) return null;
+
   return (
     <div className="mt-9 flex flex-col gap-9 md:overflow-hidden">
       <section className="flex flex-col gap-5">
@@ -12,13 +17,15 @@ const Home = () => {
 
         <div className="podcast_grid">
           {trendingPodcasts?.map(
-            ({ _id, podcastTitle, podcastDescription, imageUrl }) => (
+            ({ _id, podcastTitle, podcastDescription, imageUrl, authorId }) => (
               <PodcastCard
                 key={_id}
                 imgUrl={imageUrl as string}
                 title={podcastTitle}
                 description={podcastDescription}
                 podcastId={_id}
+                authorId={authorId}
+                currentUserId={user.id}
               />
             )
           )}
