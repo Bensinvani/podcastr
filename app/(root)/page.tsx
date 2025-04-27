@@ -8,8 +8,6 @@ const Home = () => {
   const { user } = useUser();
   const trendingPodcasts = useQuery(api.podcasts.getTrendingPodcasts);
 
-  if (!user) return null;
-
   return (
     <div className="mt-9 flex flex-col gap-9 md:overflow-hidden">
       <section className="flex flex-col gap-5">
@@ -25,7 +23,7 @@ const Home = () => {
                 description={podcastDescription}
                 podcastId={_id}
                 authorId={authorId}
-                currentUserId={user.id}
+                currentUserId={user?.id || ""}
               />
             )
           )}

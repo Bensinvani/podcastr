@@ -18,16 +18,11 @@ const PodcastCard = ({
   const handleViews = async () => {
     if (!podcastId) return;
 
-    console.log("podcastId", podcastId);
-    console.log("authorId", authorId);
-    console.log("currentUserId", currentUserId);
-    // Do not increment if the user is the owner
     if (authorId === currentUserId) {
       router.push(`/podcast/${podcastId}`, { scroll: true });
       return;
     }
 
-    // Check if the podcast was already clicked
     const clickedPodcasts = JSON.parse(
       sessionStorage.getItem("clickedPodcasts") || "[]"
     ) as string[];
@@ -38,10 +33,8 @@ const PodcastCard = ({
       return;
     }
 
-    // Otherwise, increment views
     incrementViews({ podcastId });
 
-    // Save podcastId to clicked list
     const updatedClicked = [...clickedPodcasts, podcastId];
     sessionStorage.setItem("clickedPodcasts", JSON.stringify(updatedClicked));
 

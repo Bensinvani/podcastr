@@ -18,8 +18,6 @@ const Discover = ({
   });
   const { user } = useUser();
 
-  if (!user) return null;
-
   return (
     <div className="flex flex-col gap-9">
       <Searchbar />
@@ -47,7 +45,7 @@ const Discover = ({
                       description={podcastDescription}
                       podcastId={_id}
                       authorId={authorId}
-                      currentUserId={user.id}
+                      currentUserId={user?.id || ""}
                     />
                   )
                 )}

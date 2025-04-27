@@ -23,8 +23,6 @@ const PodcastDetails = ({
     podcastId,
   });
 
-  if (!user) return null;
-
   const isOwner = user?.id === podcast?.authorId;
 
   if (!similarPodcasts || !podcast) return <LoaderSpinner />;
@@ -95,7 +93,7 @@ const PodcastDetails = ({
                   description={podcastDescription}
                   podcastId={_id}
                   authorId={authorId}
-                  currentUserId={user.id}
+                  currentUserId={user?.id || ""}
                 />
               )
             )}

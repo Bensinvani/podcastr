@@ -25,7 +25,6 @@ const ProfilePage = ({
   const podcastsData = useQuery(api.podcasts.getPodcastByAuthorId, {
     authorId: params.profileId,
   });
-  if (!user) return null;
 
   if (!userId || !podcastsData) return <LoaderSpinner />;
 
@@ -55,7 +54,7 @@ const ProfilePage = ({
                   description={podcast.podcastDescription}
                   podcastId={podcast._id}
                   authorId={podcast.authorId}
-                  currentUserId={user.id}
+                  currentUserId={user?.id || ""}
                 />
               ))}
           </div>
